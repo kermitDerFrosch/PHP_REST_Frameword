@@ -17,7 +17,7 @@ class Error404Entry extends RestEntry {
         $this->response->setMessage("Not Found");
     }
 
-    protected function onGet() {
+    protected function onGet() : array{
         return [
             "GET" => $_GET,
             "POST" => $_POST,

@@ -6,6 +6,13 @@ function autoload($class) {
     }
 }
 
+function endsWith( $haystack, $needle ) {
+    $length = strlen( $needle );
+    if( !$length ) {
+        return true;
+    }
+    return substr( $haystack, -$length ) === $needle;
+}
 
 spl_autoload_register("autoload");
 

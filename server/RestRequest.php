@@ -27,19 +27,19 @@ class RestRequest {
             default:
                 throw new Exception("Unknown method ".$_SERVER["REQUEST_METHOD"]);
         }
-        $this->method = $_SERVER["REQUEST_METHOD"];
+        $this->method = strtoupper($_SERVER["REQUEST_METHOD"]);
         $this->header = apache_request_headers();
         
     }
-    public function getContent() {
+    public function getContent() : array {
         return $this->content;
     }
 
-    public function getMethod() {
+    public function getMethod() : string {
         return $this->method;
     }
 
-    public function getHeader() {
+    public function getHeader() : array {
         return $this->header;
     }
 

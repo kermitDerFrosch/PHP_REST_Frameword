@@ -43,7 +43,7 @@ class RestResponse {
      * 
      * @return array
      */
-    public function getContent() {
+    public function getContent() : array {
         return $this->content;
     }
 
@@ -51,15 +51,11 @@ class RestResponse {
      * 
      * @return int
      */
-    public function getCode() {
+    public function getCode() : int {
         return $this->code;
     }
 
-    /**
-     * 
-     * @return array
-     */
-    public function getHeader() {
+    public function getHeader() : array {
         return $this->header;
     }
 
@@ -67,7 +63,7 @@ class RestResponse {
      * 
      * @param array $content
      */
-    public function setContent(array $content) {
+    public function setContent(array $content) : void {
         $this->content = $content;
     }
 
@@ -75,7 +71,7 @@ class RestResponse {
      * 
      * @param int $code
      */
-    public function setCode(int $code) {
+    public function setCode(int $code) : void {
         http_response_code($code);
         $this->code = $code;
     }
@@ -84,15 +80,24 @@ class RestResponse {
      * 
      * @param string $header
      */
-    public function addHeader(string $header) {
+    public function addHeader(string $header) : void {
         $this->header[] = $header;
     }
 
-    public function getMessage() {
+    /**
+     * 
+     * @return string
+     */
+    public function getMessage() : string {
         return $this->message;
     }
 
-    public function setMessage($message) {
+    /**
+     * 
+     * @param string $message
+     * @return void
+     */
+    public function setMessage(string $message) : void {
         $this->message = $message;
     }
 
@@ -100,7 +105,7 @@ class RestResponse {
      * 
      * @return array
      */
-    public function toArray() {
+    public function toArray() : array{
         return [
             "code" => $this->code,
             "msg" => $this->message,

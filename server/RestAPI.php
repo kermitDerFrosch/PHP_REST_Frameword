@@ -35,9 +35,10 @@ class RestAPI {
         if (!file_exists("server/entrys/".ucfirst($entryName)."Entry.php")) {
             $entryName = "Error404";
         }
-        $className = "server\\entrys\\".ucfirst($entryName)."Entry";
-        $entry = new $className($this->request, $this->response);
+        $className = "server\\entrys\\". str_replace("/", "\\", ucfirst($entryName))."Entry";
         
+        $entry = new $className($this->request, $this->response);
+        unset($entry);
         
         $this->setHeader();
         $this->printResponseData();
@@ -51,7 +52,7 @@ class RestAPI {
         echo $data;
     }
     
-    private function setHeader() {
+    private function setHeader() : void {
         $header = $this->response->getHeader();
         foreach ($header as $line) {
             header($line);

@@ -21,7 +21,7 @@ abstract class RestEntry {
      */
     protected $response;
     
-    public function __construct(RestRequest $request, RestResponse $response) {
+    public function __construct(RestRequest &$request, RestResponse &$response) {
         $this->request = $request;
         $this->response= $response;
         switch ($request->getMethod()) {
@@ -41,19 +41,19 @@ abstract class RestEntry {
         $this->response->setContent($content);
     }
 
-    protected function onPost() {
+    protected function onPost() : array {
         throw new Exception("not implemented");
     }
 
-    protected function onGet() {
+    protected function onGet() : array {
         throw new Exception("not implemented");
     }
 
-    protected function onPut() {
+    protected function onPut() : array {
         throw new Exception("not implemented");
     }
 
-    protected function onDelete() {
+    protected function onDelete() : array {
         throw new Exception("not implemented");
     }
 

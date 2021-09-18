@@ -5,4 +5,4 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}/$1 [R=301,L]
 
 RewriteRule ^(.*)$ /index.php?entry=$1&%{QUERY_STRING} [L]
 
-ErrorDocument 404 /404.php
+ErrorDocument 404 /Error404
