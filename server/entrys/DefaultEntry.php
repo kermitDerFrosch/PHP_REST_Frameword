@@ -22,7 +22,7 @@ class DefaultEntry extends RestEntry {
                 $rc = array_merge($rc, $this->getEntrys($path . "/" . $file));
             } else {
                 if (endsWith($file, "Entry.php")) {
-                    $rc[] = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"] . "/" . $path.substr($file, 0, -9);
+                    $rc[] = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"] .$_SERVER["REQUEST_URI"]. $path.substr($file, 0, -9);
                 }
             }
         }
