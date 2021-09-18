@@ -14,6 +14,9 @@ class DefaultEntry extends RestEntry {
     private function getEntrys($path = ""): array {
         $dir = dir(__DIR__ . "/" . $path);
         $rc = [];
+        
+        $uri = endsWith($_SERVER["REQUEST_URI"], ".php") ? dirname($_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+
         while ($file = $dir->read()) {
             if ($file[0] === '.' || in_array($file, ["DefaultEntry.php", "Error404Entry.php"])) {
                 continue;
@@ -22,7 +25,7 @@ class DefaultEntry extends RestEntry {
                 $rc = array_merge($rc, $this->getEntrys($path . "/" . $file));
             } else {
                 if (endsWith($file, "Entry.php")) {
-                    $rc[] = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"] .$_SERVER["REQUEST_URI"]. $path.substr($file, 0, -9);
+                    $rc[] = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"] .$uri. $path.substr($file, 0, -9);
                 }
             }
         }
