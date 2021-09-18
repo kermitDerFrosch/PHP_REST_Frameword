@@ -21,4 +21,5 @@ use server\RestAPI;
 
 
 $api = new RestAPI();
+unset($api);
 

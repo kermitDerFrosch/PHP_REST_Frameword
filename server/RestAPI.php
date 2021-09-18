@@ -24,7 +24,16 @@ class RestAPI {
      */
     private $response;
 
+    /**
+     *
+     * @var int
+     */
+    private $startTime;
+    
+    public static $duraion;
+    
     public function __construct() {
+        $this->startTime = microtime(true);
         $this->request = new RestRequest();
         $this->response = new RestResponse();
         $this->response->addHeader("Content-type: application/json; charset: utf-8");
@@ -44,10 +53,11 @@ class RestAPI {
         unset($entry);
         
         $this->setHeader();
+        self::$duraion = microtime(true) - $this->startTime;
         $this->printResponseData();
     }
     
-    public function printResponseData(): void {
+    private function printResponseData(): void {
         $data = json_encode($this->response->toArray());
         if (!$data) {
             throw new Exception("something went wrong");

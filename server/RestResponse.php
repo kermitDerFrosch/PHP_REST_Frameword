@@ -109,7 +109,8 @@ class RestResponse {
         return [
             "code" => $this->code,
             "msg" => $this->message,
-            "data" => $this->content
+            "data" => $this->content,
+            "duration" => number_format(RestAPI::$duraion,5)." s",
         ];
     }
 
