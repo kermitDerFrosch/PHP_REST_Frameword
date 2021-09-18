@@ -28,9 +28,12 @@ class RestAPI {
         $this->request = new RestRequest();
         $this->response = new RestResponse();
         $this->response->addHeader("Content-type: application/json; charset: utf-8");
-        $entryName = filter_input(INPUT_GET, "entry", FILTER_SANITIZE_STRING);
+        $entryName = filter_input(INPUT_GET, "_rest__entry", FILTER_SANITIZE_STRING);
         if (empty($entryName)) {
             $entryName = "Default";
+        }
+        if (endsWith($entryName, "/")) {
+            $entryName = substr($entryName, 0, -1);
         }
         if (!file_exists("server/entrys/".ucfirst($entryName)."Entry.php")) {
             $entryName = "Error404";
