@@ -1,35 +1,24 @@
 <?php
 
 namespace server;
-
+use \Exception;
 /**
  * Description of RestRequest
  *
  * @author sascha
  */
 class RestRequest {
-    private $content;
-    private $method;
+    private $content = [];
+    private $method = "GET";
     private $header;
 
     public function __construct() {
-        switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
-            case "GET":
-                break;
-            case "POST":
-            case "PUT":
-            case "DELETE":
-                $this->content = json_decode(file_get_contents("php://stdin"), true);
-                if (!$this->content) {
-                    throw new Exception("unknown input");
-                }
-                break;
-            default:
-                throw new Exception("Unknown method ".$_SERVER["REQUEST_METHOD"]);
+        $content = json_decode(file_get_contents("php://stdin"), true);
+        if ($content) {
+            $this->content = $content;
         }
         $this->method = strtoupper($_SERVER["REQUEST_METHOD"]);
         $this->header = apache_request_headers();
-        
     }
     
     /**
@@ -37,6 +26,9 @@ class RestRequest {
      * @return array
      */
     public function getContent() : array {
+        if (!is_array($this->content)) {
+            return [];
+        }
         return $this->content;
     }
 

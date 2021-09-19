@@ -8,7 +8,7 @@
 
 namespace server;
 
-use \server\entrys\DefaultEntry;
+use \Exception;
 
 class RestAPI {
 
@@ -43,26 +43,38 @@ class RestAPI {
         $this->response = new RestResponse();
         $this->response->addHeader("Content-type: application/json; charset: utf-8");
         $entryName = filter_input(INPUT_GET, "_rest__entry", FILTER_SANITIZE_STRING);
-        if (!self::$devMode) {
-            $loggedIn = array_key_exists("loggedIn", $_SESSION) && $_SESSION["loggedIn"] === true;
-            $validClientIp = array_key_exists("clientIp", $_SESSION) && $_SESSION["clientIp"] === getRemoteAddr();
-            if (!$loggedIn || !$validClientIp) {
+
+        if (!self::isLoggedIn() && $entryName !== "login") {
+            $entryName = "Error404";
+        } else {
+            if (empty($entryName)) {
+                $entryName = "Default";
+            }
+            if (endsWith($entryName, "/")) {
+                $entryName = substr($entryName, 0, -1);
+            }
+            if (!file_exists("server/entrys/" . ucfirst($entryName) . "Entry.php")) {
                 $entryName = "Error404";
             }
         }
-        if (empty($entryName)) {
-            $entryName = "Default";
-        }
-        if (endsWith($entryName, "/")) {
-            $entryName = substr($entryName, 0, -1);
-        }
-        if (!file_exists("server/entrys/" . ucfirst($entryName) . "Entry.php")) {
-            $entryName = "Error404";
-        }
         $className = "server\\entrys\\" . str_replace("/", "\\", ucfirst($entryName)) . "Entry";
 
-        $entry = new $className($this->request, $this->response);
-        unset($entry);
+        try {
+
+            $entry = new $className($this->request, $this->response);
+            unset($entry);
+        } catch (Exception $e) {
+            $entry = new entrys\Error404Entry($this->request, $this->response, $e->getMessage());
+        }
+    }
+
+    public static function isLoggedIn(): bool {
+        if (self::$devMode) {
+            return true;
+        }
+        $loggedIn = array_key_exists("loggedIn", $_SESSION) && $_SESSION["loggedIn"] === true;
+        $validClientIp = array_key_exists("clientIp", $_SESSION) && $_SESSION["clientIp"] === getRemoteAddr();
+        return $loggedIn && $validClientIp;
     }
 
     public function __destruct() {
