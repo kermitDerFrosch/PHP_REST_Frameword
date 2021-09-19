@@ -11,17 +11,14 @@ use \server\RestEntry;
  */
 class Error404Entry extends RestEntry {
 
-    public function __construct(\server\RestRequest $request, \server\RestResponse $response) {
+    public function __construct(\server\RestRequest &$request, \server\RestResponse &$response) {
         parent::__construct($request, $response);
         $this->response->setCode(404);
         $this->response->setMessage("Not Found");
     }
 
-    protected function onGet() : array{
-        return [
-            "GET" => $_GET,
-            "POST" => $_POST,
-        ];
+    protected function onGet(): array {
+        return [];
     }
 
 }

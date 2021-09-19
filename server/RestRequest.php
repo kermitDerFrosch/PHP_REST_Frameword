@@ -31,14 +31,27 @@ class RestRequest {
         $this->header = apache_request_headers();
         
     }
+    
+    /**
+     * 
+     * @return array
+     */
     public function getContent() : array {
         return $this->content;
     }
 
+    /**
+     * 
+     * @return string
+     */
     public function getMethod() : string {
         return $this->method;
     }
 
+    /**
+     * 
+     * @return array
+     */
     public function getHeader() : array {
         return $this->header;
     }

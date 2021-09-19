@@ -21,6 +21,11 @@ abstract class RestEntry {
      */
     protected $response;
     
+    /**
+     * 
+     * @param \server\RestRequest $request
+     * @param \server\RestResponse $response
+     */
     public function __construct(RestRequest &$request, RestResponse &$response) {
         $this->request = $request;
         $this->response= $response;

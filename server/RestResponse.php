@@ -43,7 +43,7 @@ class RestResponse {
      * 
      * @return array
      */
-    public function getContent() : array {
+    public function getContent(): array {
         return $this->content;
     }
 
@@ -51,11 +51,11 @@ class RestResponse {
      * 
      * @return int
      */
-    public function getCode() : int {
+    public function getCode(): int {
         return $this->code;
     }
 
-    public function getHeader() : array {
+    public function getHeader(): array {
         return $this->header;
     }
 
@@ -63,7 +63,7 @@ class RestResponse {
      * 
      * @param array $content
      */
-    public function setContent(array $content) : void {
+    public function setContent(array $content): void {
         $this->content = $content;
     }
 
@@ -71,7 +71,7 @@ class RestResponse {
      * 
      * @param int $code
      */
-    public function setCode(int $code) : void {
+    public function setCode(int $code): void {
         http_response_code($code);
         $this->code = $code;
     }
@@ -80,7 +80,7 @@ class RestResponse {
      * 
      * @param string $header
      */
-    public function addHeader(string $header) : void {
+    public function addHeader(string $header): void {
         $this->header[] = $header;
     }
 
@@ -88,7 +88,7 @@ class RestResponse {
      * 
      * @return string
      */
-    public function getMessage() : string {
+    public function getMessage(): string {
         return $this->message;
     }
 
@@ -97,7 +97,7 @@ class RestResponse {
      * @param string $message
      * @return void
      */
-    public function setMessage(string $message) : void {
+    public function setMessage(string $message): void {
         $this->message = $message;
     }
 
@@ -105,13 +105,22 @@ class RestResponse {
      * 
      * @return array
      */
-    public function toArray() : array{
-        return [
+    public function toArray(): array {
+        $rc = [
             "code" => $this->code,
             "msg" => $this->message,
-            "data" => $this->content,
-            "duration" => number_format(RestAPI::$duraion,5)." s",
+            "data" => empty($this->content) ? null : $this->content,
+            "duration" => RestAPI::getDuration() . " s",
         ];
+        if (RestAPI::$devMode) {
+            $rc["debug"]["GET"] = $_GET;
+            $rc["debug"]["COOKIES"] = $_COOKIE;
+            $rc["debug"]["SESSION"] = $_SESSION;
+            $rc["debug"]["HEAD"] = apache_request_headers();
+            $rc["debug"]["SERVER"] = $_SERVER;
+        }
+
+        return $rc;
     }
 
 }

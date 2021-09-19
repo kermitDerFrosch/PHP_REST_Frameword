@@ -19,7 +19,10 @@ spl_autoload_register("autoload");
 
 use server\RestAPI;
 
+RestAPI::$devMode = true;
 
+// parse API request
 $api = new RestAPI();
-unset($api);
 
+// print response
+unset($api);
